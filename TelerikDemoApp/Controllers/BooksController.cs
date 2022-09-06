@@ -78,8 +78,11 @@ namespace TelerikDemoApp.Controllers
 
             filteredResults.ForEach(x =>
             {
-                x.UploadDate = !string.IsNullOrEmpty(x.UploadDate) ? DateTime.Parse(x.UploadDate).ToString("MM-dd-yyyy") : string.Empty;
-                x.Created = !string.IsNullOrEmpty(x.Created) ? DateTime.Parse(x.Created).ToString("MM-dd-yyyy") : string.Empty;
+                DateTime.TryParse(x.UploadDate, out var uploadDateParsed);
+                DateTime.TryParse(x.Created, out var createdDateParsed);
+
+                x.UploadDate = uploadDateParsed != DateTime.MinValue ? uploadDateParsed.ToString("MM-dd-yyyy") : string.Empty;
+                x.Created = createdDateParsed != DateTime.MinValue ? createdDateParsed.ToString("MM-dd-yyyy") : string.Empty;
             });
 
             return filteredResults;
