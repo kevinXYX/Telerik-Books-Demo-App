@@ -65,25 +65,16 @@ namespace TelerikDemoApp.Controllers
                             videoDurationQuery.ForEach(x => filteredResults.Add(x));
                             break;
                         case "uploadDate":
-                            var uploadDateQuery = result.Where(x => !string.IsNullOrEmpty(x.UploadDate) ? DateTime.Parse(x.UploadDate).ToString("MM-dd-yyyy").Contains(filter.Value.ToString()) : false).ToList();
+                            var uploadDateQuery = result.Where(x => !string.IsNullOrEmpty(x.UploadDate) ? x.UploadDate.Contains(filter.Value.ToString()) : false).ToList();
                             uploadDateQuery.ForEach(x => filteredResults.Add(x));
                             break;
                         case "created":
-                            var createDateQuery = result.Where(x => !string.IsNullOrEmpty(x.Created) ? DateTime.Parse(x.Created).ToString("MM-dd-yyyy").Contains(filter.Value.ToString()) : false).ToList();
+                            var createDateQuery = result.Where(x => !string.IsNullOrEmpty(x.Created) ? x.Created.Contains(filter.Value.ToString()) : false).ToList();
                             createDateQuery.ForEach(x => filteredResults.Add(x));
                             break;
                     }
                 }
             }
-
-            filteredResults.ForEach(x =>
-            {
-                DateTime.TryParse(x.UploadDate, out var uploadDateParsed);
-                DateTime.TryParse(x.Created, out var createdDateParsed);
-
-                x.UploadDate = uploadDateParsed != DateTime.MinValue ? uploadDateParsed.ToString("MM-dd-yyyy") : string.Empty;
-                x.Created = createdDateParsed != DateTime.MinValue ? createdDateParsed.ToString("MM-dd-yyyy") : string.Empty;
-            });
 
             return filteredResults;
         }
